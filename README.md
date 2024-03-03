@@ -17,6 +17,12 @@ Enter the following in a ***PowerShell*** terminal:
 irm https://setup.talhaak.com | iex
 ```
 
+or alternatively (if you'd rather use a direct link):
+
+```
+irm https://raw.githubusercontent.com/Talha-Ak/windows-setup-script/main/setup.ps1 | iex
+```
+
 <kbd>Ctrl</kbd> + <kbd>Click</kbd> to select which programs to install.
 Follow any remaining prompts.
 
