@@ -2,14 +2,18 @@
 # irm 'https://setup.talhaak.com' | iex
 $programs = @(
     [pscustomobject]@{Name = "7-Zip"; Id = '7zip.7zip'; Source = "winget" },
+    [pscustomobject]@{Name = "Arc"; Id = 'TheBrowserCompany.Arc'; Source = "winget" },
     [pscustomobject]@{Name = "Audacity"; Id = 'Audacity.Audacity'; Source = "winget" },
+    [pscustomobject]@{Name = "Brave"; Id = 'Brave.Brave'; Source = "winget" },
     [pscustomobject]@{Name = "Bitwarden"; Id = 'Bitwarden.Bitwarden'; Source = "winget" },
     [pscustomobject]@{Name = "Chrome"; Id = 'Google.Chrome'; Source = "winget" },
     [pscustomobject]@{Name = "Discord"; Id = 'Discord.Discord'; Source = "winget" },
+    [pscustomobject]@{Name = "Epic Games Launcher"; Id = 'EpicGames.EpicGamesLauncher'; Source = "winget" },
     [pscustomobject]@{Name = "Firefox"; Id = 'Mozilla.Firefox'; Source = "winget" },
     [pscustomobject]@{Name = "GeForce Experience"; Id = 'Nvidia.GeForceExperience'; Source = "winget" },
     [pscustomobject]@{Name = "Git"; Id = 'Git.Git'; Source = "winget" },
     [pscustomobject]@{Name = "HandBrake"; Id = 'HandBrake.HandBrake'; Source = "winget" },
+    [pscustomobject]@{Name = "Heroic Games Launcher"; Id = 'HeroicGamesLauncher.HeroicGamesLauncher'; Source = "winget" },
     [pscustomobject]@{Name = "Nearby Share"; Id = 'Google.NearbyShare'; Source = "winget" },
     [pscustomobject]@{Name = "OBS Studio"; Id = 'OBSProject.OBSStudio'; Source = "winget" },
     [pscustomobject]@{Name = "Obsidian"; Id = 'Obsidian.Obsidian'; Source = "winget" },
