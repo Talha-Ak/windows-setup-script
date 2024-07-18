@@ -29,14 +29,18 @@ Follow any remaining prompts.
 ## Programs available
 
 - 7-zip
+- Arc Browser
 - Audacity
 - Bitwarden
+- Brave
 - Chrome
 - Discord
+- Epic Games Launcher
 - Firefox
 - Geforce Experience
 - Git
 - Handbrake
+- Heroic Games Launcher
 - Nearby Share
 - OBS Studio
 - Obsidian
