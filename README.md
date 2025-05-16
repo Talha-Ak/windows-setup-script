@@ -2,7 +2,7 @@
 > A small script for installing programs I probably need to get up and running.
 
 This script will:
-- Detect (and install if not present) [WinGet](https://github.com/microsoft/winget-cli)
+- Detect (and if necessary, prompt to install) [WinGet](https://github.com/microsoft/winget-cli)
 - Prompt to select which programs to install
 - Install all selected progams sequentially
 

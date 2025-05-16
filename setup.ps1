@@ -48,73 +48,51 @@ function Invoke-MenuPrompt {
 }
 
 function Test-Winget {
-    return Test-Path ~\AppData\Local\Microsoft\WindowsApps\winget.exe
+    if (Get-Command winget.exe -ErrorAction SilentlyContinue) {
+        Write-Host "Winget is installed and functional." -ForegroundColor Green
+        return $true
+    } else {
+        Write-Warning "Winget is not installed, or not found in PATH"
+        return $false
+    }
 }
 
 function Get-Winget {
-    $title = "Winget not installed"
-    $msg = "Attempt to install winget? (Required)"
-    $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
-        "Will download & install winget."
-    $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", `
-        "Will exit the script."
-    $options = $yes, $no
+    Write-Host "Attempting to install Winget from the Microsoft Store (App Installer)."
 
-    $response = Invoke-MenuPrompt $title $msg $options
-
-    If ($response -eq 1) {
-        Write-Host "Not installing winget. Aborting script."
-        break
-    }
-
-    If ($null -eq (Get-AppxPackage Microsoft.WindowsStore)) {
-        Get-WingetManually
+    If ($null -eq (Get-AppxPackage Microsoft.WindowsStore -ErrorAction SilentlyContinue)) {
+        Write-Host "Microsoft Store not found."
     }
     Else {
+        Write-Host "Attempting to open the Microsoft Store for Winget (App Installer)."
         Try {
-            Write-Host "Trying to install Winget via Microsoft Store."
-            Start-Process "ms-appinstaller:?source=https://aka.ms/getwinget"
-            $nid = (Get-Process AppInstaller).Id
-            Wait-Process -Id $nid
+            Start-Process "ms-appinstaller:?source=https://aka.ms/getwinget" -ErrorAction Stop 
+            Write-Host ""
+            Write-Host "The Microsoft Store page for App Installer (which includes Winget) should now be open." -ForegroundColor Cyan
+            Write-Host "Please install or update it from the Store." -ForegroundColor Cyan
+            Write-Host "After the installation from the Store is complete, please RE-RUN THIS SCRIPT." -ForegroundColor Yellow
+            Write-Host ""
+            Write-Host "This script will now exit to allow you to complete the Store installation."
+            Exit 0
         }
-        Catch {    
-            Get-WingetManually
+        Catch {
+            Write-Warning "Failed to open the Microsoft Store for Winget installation: $($_.Exception.Message)"
         }
     }
 
     If (!(Test-Winget)) {
         Write-Host "Could not install Winget. Aborting script."
-        break
+        Exit 1
     }
-}
-
-function Get-WingetManually {
-    Write-Host "Trying to install Winget manually."
-    $ProgressPreference = 'SilentlyContinue'
-    Write-Host 'Downloading Visual C++ libraries...'
-    Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-    Write-Host 'Installing Visual C++ libraries...'
-    Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
-
-    $releases_url = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    $releases = Invoke-RestMethod -uri $releases_url
-    $latestRelease = $releases.assets | Where-Object { $_.browser_download_url.EndsWith('msixbundle') } | Select-Object -First 1
-    
-    Write-Host "Downloading Winget from $($latestRelease.browser_download_url)."
-    Invoke-WebRequest -Uri $latestRelease.browser_download_url -OutFile $latestRelease.name
-    Write-Host "Installing Winget."
-    Add-AppxPackage -Path $latestRelease.name
-    Write-Host ""
 }
 
 function Get-UserProgramSelection {
     $selected = $null
     do {
-        $selected = $programs | Out-GridView -Title "Select one or more programs to install" -PassThru
+        $selected = $programs | Out-GridView -Title "Select programs to install (Ctrl+Click for multiple)" -PassThru
         if ($null -eq $selected) {
             $title = "No programs selected"
-            $msg = "Exit script?"
+            $msg = "No programs were selected. Do you want to exit the script?"
             $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
                 "Will exit the script."
             $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", `
@@ -123,8 +101,8 @@ function Get-UserProgramSelection {
     
             $response = Invoke-MenuPrompt $title $msg $options 1
             If ($response -eq 0) {
-                Write-Host "Exiting script."
-                Exit
+                Write-Host "Exiting script." -ForegroundColor Yellow
+                Exit 1
             }
         }
     } while (
@@ -136,7 +114,7 @@ function Get-UserProgramSelection {
 
 function Get-UserProgramConfirmation {
     $title = "Program installation"
-    $msg = "Install the selected programs?"
+    $msg = "Proceed with installing these program(s)?"
     $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
         "Will install all selected programs."
     $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", `
@@ -164,27 +142,85 @@ function Install-WingetPackages {
     }
 }
 
+function Install-WingetPackages {
+    param (
+        [pscustomobject[]]$packagesToInstall,
+        [System.Collections.Generic.List[string]]$FailedList 
+    )
+
+    Write-Host "`nStarting program installations..." -ForegroundColor Cyan
+    foreach ($package in $packagesToInstall) {
+        Write-Host "------------------------------------------------------------"
+        Write-Host "Attempting to install: $($package.Name) (ID: $($package.Id))"
+        
+        # Winget arguments:
+        # --exact: Ensures the ID matches exactly.
+        # --accept-package-agreements: Auto-accepts license agreements from the package.
+        # --accept-source-agreements: Auto-accepts agreements from the source (e.g., winget repository).
+        # --disable-interactivity: Attempts to run installers silently if supported by the package.
+        $wingetArgs = @("install", "--id", $package.Id, "--exact", "--accept-package-agreements", "--accept-source-agreements", "--disable-interactivity")
+        $wingetArgs += "--source", "winget"
+        
+        Write-Host "Executing: winget $($wingetArgs -join ' ')"
+
+        try {
+            $process = Start-Process winget -ArgumentList $wingetArgs -Wait -NoNewWindow -PassThru
+            
+            if ($process.ExitCode -eq 0) {
+                Write-Host "$($package.Name) installed successfully or was already installed." -ForegroundColor Green
+            } else {
+                Write-Warning "Failed to install $($package.Name). Winget process exited with code: $($process.ExitCode)."
+                $FailedList.Add($package.Name)
+            }
+        }
+        catch {
+            Write-Error "An unexpected error occurred while trying to run winget for $($package.Name): $($_.Exception.Message)"
+            $FailedList.Add($package.Name)
+        }
+    }
+    Write-Host "------------------------------------------------------------"
+}
+
+
+# --------------------------------------------
+# Main Script Execution
 # --------------------------------------------
 
-Write-Host "Clean Windows Program Installer"
+Write-Host "Clean Windows Program Installer" -ForegroundColor Cyan
 
 If (!(Test-Winget)) {
     Get-Winget 
 }
 
-$confirm = $null
+$confirm = 1
 Do {
     $selected = Get-UserProgramSelection
-    Write-Host "The following programs were selected."
-    $selected | Format-Table -AutoSize
+    Write-Host "You have selected the following programs for installation:"
+    $selected | Format-Table -Property Name, Id -AutoSize
     $confirm = Get-UserProgramConfirmation
 } While (
     $confirm -eq 1
 )
 
 If ($confirm -eq 2) {
-    Write-Host "Exiting script..."
-    Exit
+    Write-Host "Exiting script..." -ForegroundColor Yellow
+    Exit 0
 }
 
-Install-WingetPackages $selected
+$failedInstallations = [System.Collections.Generic.List[string]]::new()
+
+Install-WingetPackages $selected $failedInstallations
+
+Write-Host "Script Execution Finished." -ForegroundColor Cyan
+
+if ($failedInstallations.Count -gt 0) {
+    Write-Warning "`nThe following $($failedInstallations.Count) package(s) may have failed to install or encountered errors:"
+    foreach ($failedPackageName in $failedInstallations) {
+        Write-Warning "- $failedPackageName"
+    }
+    Write-Warning "Please check the output above for specific error messages from Winget."
+} else {
+    Write-Host "`nAll selected programs were processed. Check output above for details." -ForegroundColor Green
+}
+
+Write-Host "You can now close this window." -ForegroundColor Green
