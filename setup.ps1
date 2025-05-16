@@ -105,7 +105,7 @@ function Get-UserProgramSelection {
             $response = Invoke-MenuPrompt $title $msg $options 1
             If ($response -eq 0) {
                 Write-Host "Exiting script." -ForegroundColor Yellow
-                Exit 1
+                Exit 0
             }
         }
     } while (
