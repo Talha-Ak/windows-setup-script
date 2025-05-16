@@ -38,7 +38,6 @@ Follow any remaining prompts.
 - Discord
 - Epic Games Launcher
 - Firefox
-- Geforce Experience
 - Git
 - Handbrake
 - Heroic Games Launcher

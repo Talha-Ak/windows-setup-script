@@ -12,7 +12,6 @@ $programs = @(
     [pscustomobject]@{Name = "Discord"; Id = 'Discord.Discord'; Source = "winget" },
     [pscustomobject]@{Name = "Epic Games Launcher"; Id = 'EpicGames.EpicGamesLauncher'; Source = "winget" },
     [pscustomobject]@{Name = "Firefox"; Id = 'Mozilla.Firefox'; Source = "winget" },
-    [pscustomobject]@{Name = "GeForce Experience"; Id = 'Nvidia.GeForceExperience'; Source = "winget" },
     [pscustomobject]@{Name = "Git"; Id = 'Git.Git'; Source = "winget" },
     [pscustomobject]@{Name = "HandBrake"; Id = 'HandBrake.HandBrake'; Source = "winget" },
     [pscustomobject]@{Name = "Heroic Games Launcher"; Id = 'HeroicGamesLauncher.HeroicGamesLauncher'; Source = "winget" },
