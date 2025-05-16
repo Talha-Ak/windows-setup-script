@@ -132,21 +132,6 @@ function Get-UserProgramConfirmation {
 
 function Install-WingetPackages {
     param (
-        [pscustomobject[]]$packages
-    )
-
-    foreach ($package in $packages) {
-        If ("MS Store" -eq $package.Source) {
-            Invoke-Expression "winget install --id=$($package.Id) --accept-package-agreements --accept-source-agreements -s msstore"
-        }
-        else {
-            Invoke-Expression "winget install --id=$($package.Id) -e --accept-package-agreements --accept-source-agreements"
-        }
-    }
-}
-
-function Install-WingetPackages {
-    param (
         [pscustomobject[]]$packagesToInstall,
         [System.Collections.Generic.List[string]]$FailedList 
     )
