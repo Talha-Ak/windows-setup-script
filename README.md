@@ -34,6 +34,7 @@ Follow any remaining prompts.
 - Bitwarden
 - Brave
 - Chrome
+- CrystalDiskMark
 - Discord
 - Epic Games Launcher
 - Firefox
@@ -41,13 +42,15 @@ Follow any remaining prompts.
 - Git
 - Handbrake
 - Heroic Games Launcher
-- Nearby Share
+- HWiNFO
+- Multiviewer for F1
 - OBS Studio
 - Obsidian
 - Parsec
 - Plex
 - PowerToys (Preview)
 - qBittorrent
+- Quick Share
 - Rainmeter
 - Spicetify
 - Spotify

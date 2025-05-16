@@ -1,5 +1,6 @@
 # This script can be run using the following command in a PowerShell window:
 # irm 'https://setup.talhaak.com' | iex
+# See https://github.com/Talha-Ak/windows-setup-script for more details.
 $programs = @(
     [pscustomobject]@{Name = "7-Zip"; Id = '7zip.7zip'; Source = "winget" },
     [pscustomobject]@{Name = "Arc"; Id = 'TheBrowserCompany.Arc'; Source = "winget" },
@@ -7,6 +8,7 @@ $programs = @(
     [pscustomobject]@{Name = "Brave"; Id = 'Brave.Brave'; Source = "winget" },
     [pscustomobject]@{Name = "Bitwarden"; Id = 'Bitwarden.Bitwarden'; Source = "winget" },
     [pscustomobject]@{Name = "Chrome"; Id = 'Google.Chrome'; Source = "winget" },
+    [pscustomobject]@{Name = "CrystalDiskMark"; Id = 'CrystalDewWorld.CrystalDiskMark'; Source = "winget" },
     [pscustomobject]@{Name = "Discord"; Id = 'Discord.Discord'; Source = "winget" },
     [pscustomobject]@{Name = "Epic Games Launcher"; Id = 'EpicGames.EpicGamesLauncher'; Source = "winget" },
     [pscustomobject]@{Name = "Firefox"; Id = 'Mozilla.Firefox'; Source = "winget" },
@@ -14,13 +16,15 @@ $programs = @(
     [pscustomobject]@{Name = "Git"; Id = 'Git.Git'; Source = "winget" },
     [pscustomobject]@{Name = "HandBrake"; Id = 'HandBrake.HandBrake'; Source = "winget" },
     [pscustomobject]@{Name = "Heroic Games Launcher"; Id = 'HeroicGamesLauncher.HeroicGamesLauncher'; Source = "winget" },
-    [pscustomobject]@{Name = "Nearby Share"; Id = 'Google.NearbyShare'; Source = "winget" },
+    [pscustomobject]@{Name = "HWiNFO"; Id = 'REALiX.HWiNFO'; Source = "winget" },
+    [pscustomobject]@{Name = "MultiViewer for F1"; Id = 'MultiViewer.MultiViewer'; Source = "winget" },
     [pscustomobject]@{Name = "OBS Studio"; Id = 'OBSProject.OBSStudio'; Source = "winget" },
     [pscustomobject]@{Name = "Obsidian"; Id = 'Obsidian.Obsidian'; Source = "winget" },
     [pscustomobject]@{Name = "Parsec"; Id = 'Parsec.Parsec'; Source = "winget" },
     [pscustomobject]@{Name = "Plex"; Id = 'Plex.Plex'; Source = "winget" },
     [pscustomobject]@{Name = "PowerToys (Preview)"; Id = 'Microsoft.PowerToys'; Source = "winget" },
     [pscustomobject]@{Name = "qBittorrent"; Id = 'qBittorrent.qBittorrent'; Source = "winget" },
+    [pscustomobject]@{Name = "Quick Share"; Id = 'Google.QuickShare'; Source = "winget" },
     [pscustomobject]@{Name = "Rainmeter"; Id = 'Rainmeter.Rainmeter'; Source = "winget" },
     [pscustomobject]@{Name = "Spicetify"; Id = 'Spicetify.Spicetify'; Source = "winget" },
     [pscustomobject]@{Name = "Spotify"; Id = 'Spotify.Spotify'; Source = "winget" },
