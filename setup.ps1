@@ -28,7 +28,7 @@ $programs = @(
     [pscustomobject]@{Name = "Spicetify"; Id = 'Spicetify.Spicetify'; Source = "winget" },
     [pscustomobject]@{Name = "Spotify"; Id = 'Spotify.Spotify'; Source = "winget" },
     [pscustomobject]@{Name = "Steam"; Id = 'Valve.Steam'; Source = "winget" },
-    [pscustomobject]@{Name = "Tailscale"; Id = 'tailscale.tailscale'; Source = "winget" },
+    [pscustomobject]@{Name = "Tailscale"; Id = 'Tailscale.Tailscale'; Source = "winget" },
     [pscustomobject]@{Name = "VLC"; Id = 'VideoLAN.VLC'; Source = "winget" },
     [pscustomobject]@{Name = "Voicemeeter Banana"; Id = 'VB-Audio.Voicemeeter.Banana'; Source = "winget" },
     [pscustomobject]@{Name = "VS Code"; Id = 'Microsoft.VisualStudioCode'; Source = "winget" },
